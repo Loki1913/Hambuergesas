@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerMilenio - Hamburguesas Artesanales</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --secondary: #2F4858;
+            --accent: #F7931E;
+            --light: #F7F5FB;
+            --dark: #1A1A1A;
+            --text: #333333;
+            --success: #4CAF50;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: var(--light);
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background-color: var(--secondary);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo h1 {
+            color: var(--light);
+            font-size: 24px;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+        }
+        
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: var(--light);
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80') no-repeat center center/cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: var(--light);
+            padding-top: 80px;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent);
+            color: var(--light);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            background-color: var(--primary);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 2px solid var(--light);
+            color: var(--light);
+        }
+        
+        .btn-outline:hover {
+            background-color: var(--light);
+            color: var(--secondary);
+        }
+        
+        /* Menu Section */
+        .section {
+            padding: 80px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+        
+        .section-title p {
+            color: var(--text);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .menu-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 10px 25px;
+            margin: 0 10px 10px;
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .category-btn:hover,
+        .category-btn.active {
+            background: var(--primary);
+            color: var(--light);
+        }
+        
+        .menu-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .menu-item {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+            position: relative;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+        }
+        
+        .menu-item-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--accent);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 10;
+        }
+        
+        .menu-item-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        
+        .menu-item-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .menu-item:hover .menu-item-img img {
+            transform: scale(1.1);
+        }
+        
+        .menu-item-content {
+            padding: 20px;
+        }
+        
+        .menu-item-title {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .menu-item-title h3 {
+            font-size: 1.3rem;
+            color: var(--secondary);
+        }
+        
+        .menu-item-price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+        
+        .menu-item-desc {
+            color: var(--text);
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .menu-item-action {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 50px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .whatsapp-btn i {
+            margin-right: 5px;
+        }
+        
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+        
+        /* About Section */
+        .about {
+            background-color: var(--secondary);
+            color: var(--light);
+        }
+        
+        .about-content {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .about-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 30px;
+        }
+        
+        .about-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .about-text p {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+        
+        .about-image {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .about-image img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* Location Section */
+        .location-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+        
+        .map {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .map iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .location-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .info-item {
+            margin-bottom: 25px;
+        }
+        
+        .info-item h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--secondary);
+        }
+        
+        .info-item p {
+            margin-bottom: 5px;
+        }
+        
+        /* Testimonials */
+        .testimonials {
+            background-color: var(--light);
+        }
+        
+        .testimonial-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        
+        .testimonial {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial-text {
+            font-style: italic;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .testimonial-text:before {
+            content: "";
+            font-size: 4rem;
+            color: var(--primary);
+            position: absolute;
+            top: -20px;
+            left: -15px;
+            opacity: 0.2;
+            font-family: Georgia, serif;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .stars {
+            color: var(--accent);
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: linear-gradient(rgba(47, 72, 88, 0.9), rgba(47, 72, 88, 0.9)), url('https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80') no-repeat center center/cover;
+            color: var(--light);
+        }
+        
+        .contact-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        
+        .contact-info {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .contact-info h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        
+        .contact-info p {
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+        }
+        
+        .contact-method {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .contact-method i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            color: var(--accent);
+        }
+        
+        .contact-form {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            color: var(--text);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--secondary);
+            color: var(--light);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-logo h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .footer-logo p {
+            margin-bottom: 20px;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-icons a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--light);
+            transition: all 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .footer-links h4,
+        .footer-newsletter h4 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer-links h4:after,
+        .footer-newsletter h4:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 40px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .footer-links ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links ul li a {
+            color: var(--light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-links ul li a:hover {
+            color: var(--accent);
+        }
+        
+        .newsletter-form {
+            display: flex;
+            margin-top: 15px;
+        }
+        
+        .newsletter-form input {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+        }
+        
+        .newsletter-form button {
+            background: var(--accent);
+            color: var(--light);
+            border: none;
+            padding: 0 15px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* WhatsApp Float Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.5);
+            z-index: 1000;
+            transition: all 0.3s;
+            animation: pulse 2s infinite;
+        }
+        
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.7);
+        }
+        
+        .whatsapp-float i {
+            font-size: 28px;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(37, 211, 102, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0);
+            }
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .nav-links {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: var(--secondary);
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                transition: all 0.5s ease;
+            }
+            
+            .nav-links.active {
+                left: 0;
+            }
+            
+            .nav-links li {
+                margin: 20px 0;
+            }
+            
+            .hamburger {
+                display: block;
+            }
+            
+            .hamburger.active div:nth-child(1) {
+                transform: rotate(-45deg) translate(-5px, 6px);
+            }
+            
+            .hamburger.active div:nth-child(2) {
+                opacity: 0;
+            }
+            
+            .hamburger.active div:nth-child(3) {
+                transform: rotate(45deg) translate(-5px, -6px);
+            }
+            
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .about-text {
+                padding-right: 0;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/18095551234?text=Hola,%20quiero%20hacer%20un%20pedido" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <h1>Burger<span>Milenio</span></h1>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Menú</a></li>
+                    <li><a href="#combos">Combos</a></li>
+                    <li><a href="#about">Nosotros</a></li>
+                    <li><a href="#location">Ubicación</a></li>
+                    <li><a href="#contact">Contacto</a></li>
+                </ul>
+                <div class="hamburger">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h2>La Mejor Hamburguesa Artesanal de la Ciudad</h2>
+            <p>Disfruta de sabores únicos con más de 5,000 años de experiencia culinaria</p>
+            <div class="hero-buttons">
+                <a href="#menu" class="btn">Ver Menú</a>
+                <a href="https://wa.me/18095551234?text=Hola,%20quiero%20hacer%20un%20pedido" class="btn btn-outline" target="_blank">Pide por WhatsApp</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section class="section" id="menu">
+        <div class="container">
+            <div class="section-title">
+                <h2>Nuestro Menú</h2>
+                <p>Selección de hamburguesas que han resistido la prueba del tiempo</p>
+            </div>
+
+            <div class="menu-categories">
+                <button class="category-btn active" data-category="all">Todas</button>
+                <button class="category-btn" data-category="clasicas">Clásicas</button>
+                <button class="category-btn" data-category="especiales">Especiales</button>
+                <button class="category-btn" data-category="acompanamientos">Acompañamientos</button>
+                <button class="category-btn" data-category="bebidas">Bebidas</button>
+            </div>
+
+            <div class="menu-items">
+                <!-- Hamburguesa Clásica -->
+                <div class="menu-item" data-category="clasicas">
+                    <div class="menu-item-badge">Popular</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80" alt="Hamburguesa Clásica">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Clásica Milenaria</h3>
+                            <div class="menu-item-price">$12.99</div>
+                        </div>
+                        <p class="menu-item-desc">Carne 100% res, queso cheddar, lechuga, tomate, cebolla y salsa especial.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20una%20Hamburguesa%20Clásica%20Milenaria" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hamburguesa Especial -->
+                <div class="menu-item" data-category="especiales">
+                    <div class="menu-item-badge">Nuevo</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Hamburguesa Especial">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Especial de la Casa</h3>
+                            <div class="menu-item-price">$16.99</div>
+                        </div>
+                        <p class="menu-item-desc">Doble carne, bacon crujiente, queso americano, aros de cebolla y BBQ.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20una%20Hamburguesa%20Especial%20de%20la%20Casa" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hamburguesa Doble -->
+                <div class="menu-item" data-category="especiales">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1586816001966-79b736744398?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Hamburguesa Doble">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Doble Impacto</h3>
+                            <div class="menu-item-price">$18.99</div>
+                        </div>
+                        <p class="menu-item-desc">Doble carne, doble queso, bacon, cebolla caramelizada y salsa secreta.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20una%20Hamburguesa%20Doble%20Impacto" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hamburguesa Vegetariana -->
+                <div class="menu-item" data-category="especiales">
+                    <div class="menu-item-badge">Vegetariana</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1596662951482-0c4ba74a6df6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Hamburguesa Vegetariana">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Verde Milenio</h3>
+                            <div class="menu-item-price">$14.99</div>
+                        </div>
+                        <p class="menu-item-desc">Hamburguesa de lentejas, aguacate, espinacas, tomate y mayonesa de albahaca.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20una%20Hamburguesa%20Verde%20Milenio" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Papas Fritas -->
+                <div class="menu-item" data-category="acompanamientos">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1634034379073-f689b460a3fc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1760&q=80" alt="Papas Fritas">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Papas Milenarias</h3>
+                            <div class="menu-item-price">$5.99</div>
+                        </div>
+                        <p class="menu-item-desc">Papas fritas crujientes con piel, sazonadas con especias secretas.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20Papas%20Milenarias" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aros de Cebolla -->
+                <div class="menu-item" data-category="acompanamientos">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1632773686826-1ca60a6ce86f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Aros de Cebolla">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Aros de Cebolla</h3>
+                            <div class="menu-item-price">$6.99</div>
+                        </div>
+                        <p class="menu-item-desc">Aros de cebolla empanizados, crujientes por fuera y suaves por dentro.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20Aros%20de%20Cebolla" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bebida -->
+                <div class="menu-item" data-category="bebidas">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Bebida">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Batido Artesanal</h3>
+                            <div class="menu-item-price">$4.99</div>
+                        </div>
+                        <p class="menu-item-desc">Batido cremoso de vainilla, chocolate o fresa. Hecho con ingredientes naturales.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Batido%20Artesanal" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Refresco -->
+                <div class="menu-item" data-category="bebidas">
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Refresco">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Refresco Artesanal</h3>
+                            <div class="menu-item-price">$3.99</div>
+                        </div>
+                        <p class="menu-item-desc">Refresco natural de limón, fresa o frambuesa. Endulzado con miel.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Refresco%20Artesanal" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Combos Section -->
+    <section class="section" id="combos" style="background-color: #f9f9f9;">
+        <div class="container">
+            <div class="section-title">
+                <h2>Combos Especiales</h2>
+                <p>Ahorra con nuestros combos perfectamente equilibrados</p>
+            </div>
+
+            <div class="menu-items">
+                <!-- Combo 1 -->
+                <div class="menu-item" data-category="combos">
+                    <div class="menu-item-badge">Ahorra 15%</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1606755962773-d324e0a13086?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80" alt="Combo Clásico">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Combo Clásico</h3>
+                            <div class="menu-item-price">$16.99</div>
+                        </div>
+                        <p class="menu-item-desc">Hamburguesa clásica + papas fritas + refresco. El favorito de siempre.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Combo%20Clásico" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combo 2 -->
+                <div class="menu-item" data-category="combos">
+                    <div class="menu-item-badge">Ahorra 20%</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1769&q=80" alt="Combo Doble">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Combo Doble</h3>
+                            <div class="menu-item-price">$22.99</div>
+                        </div>
+                        <p class="menu-item-desc">Hamburguesa doble + papas fritas + aros de cebolla + refresco grande.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Combo%20Doble" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combo 3 -->
+                <div class="menu-item" data-category="combos">
+                    <div class="menu-item-badge">Ahorra 25%</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1715&q=80" alt="Combo Familiar">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Combo Familiar</h3>
+                            <div class="menu-item-price">$39.99</div>
+                        </div>
+                        <p class="menu-item-desc">4 hamburguesas + papas familiares + 4 refrescos. Perfecto para compartir.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Combo%20Familiar" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Combo 4 -->
+                <div class="menu-item" data-category="combos">
+                    <div class="menu-item-badge">Ahorra 18%</div>
+                    <div class="menu-item-img">
+                        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1681&q=80" alt="Combo Vegetariano">
+                    </div>
+                    <div class="menu-item-content">
+                        <div class="menu-item-title">
+                            <h3>Combo Verde</h3>
+                            <div class="menu-item-price">$18.99</div>
+                        </div>
+                        <p class="menu-item-desc">Hamburguesa vegetariana + ensalada + batido natural. Opción saludable.</p>
+                        <div class="menu-item-action">
+                            <a href="https://wa.me/18095551234?text=Hola,%20quiero%20ordenar%20un%20Combo%20Verde" class="whatsapp-btn" target="_blank">
+                                <i class="fab fa-whatsapp"></i> Pedir
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Nuestra Historia</h2>
+                    <p>En BurgerMilenio, nuestra pasión por las hamburguesas comenzó hace miles de años. Desde las antiguas civilizaciones hasta hoy, hemos perfeccionado el arte de la hamburguesa artesanal.</p>
+                    <p>Usamos pan recién horneado diariamente, carne 100% de res seleccionada y salsas caseras con recetas que han pasado de generación en generación.</p>
+                    <p>Nuestra misión es simple: que cada mordida sea una experiencia inolvidable que te transporte a través del tiempo y el sabor.</p>
+                    <a href="#contact" class="btn">Contáctanos</a>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80" alt="Nuestro Local">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section class="section" id="location">
+        <div class="container">
+            <div class="section-title">
+                <h2>Ubicación y Horarios</h2>
+                <p>Ven a visitarnos o pide a domicilio</p>
+            </div>
+
+            <div class="location-content">
+                <div class="map">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425872426608!3d40.740769971389275!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259bf5c8eef13%3A0x4d43e6c659c2e1a4!2sBurger%20Joint!5e0!3m2!1ses!2sus!4v1686789999999!5m2!1ses!2sus" allowfullscreen="" loading="lazy"></iframe>
+                </div>
+                <div class="location-info">
+                    <div class="info-item">
+                        <h3>Dirección</h3>
+                        <p>Avenida del Sabor 123</p>
+                        <p>Ciudad Milenaria, CM 12345</p>
+                        <a href="https://goo.gl/maps/example" class="btn" target="_blank">Cómo llegar</a>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Horarios</h3>
+                        <p>Lunes a Jueves: 11:00 - 22:00</p>
+                        <p>Viernes y Sábado: 11:00 - 00:00</p>
+                        <p>Domingo: 12:00 - 21:00</p>
+                    </div>
+
+                    <div class="info-item">
+                        <h3>Teléfono</h3>
+                        <p>+1 (800) 555-1234</p>
+                        <a href="https://wa.me/18095551234?text=Hola,%20tengo%20una%20pregunta" class="whatsapp-btn" target="_blank">
+                            <i class="fab fa-whatsapp"></i> Escríbenos
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials">
+        <div class="container">
+            <div class="section-title">
+                <h2>Lo Que Dicen Nuestros Clientes</h2>
+                <p>Experiencias reales de quienes han probado nuestras hamburguesas</p>
+            </div>
+
+            <div class="testimonial-grid">
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        <p>La mejor hamburguesa que he probado en mi vida. Jugosa, llena de sabor y con ingredientes de primera calidad. ¡Volveré una y otra vez!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Carlos Rodríguez">
+                        <div class="author-info">
+                            <h4>Carlos Rodríguez</h4>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        <p>El servicio es excelente y las hamburguesas son una obra de arte. Me encanta que usen ingredientes frescos y de calidad. ¡Altamente recomendado!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="María González">
+                        <div class="author-info">
+                            <h4>María González</h4>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial">
+                    <div class="testimonial-text">
+                        <p>Pedí a través de WhatsApp y en menos de 30 minutos tenía mi pedido en casa. Todo perfectamente empacado y caliente. ¡Gran experiencia!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Javier López">
+                        <div class="author-info">
+                            <h4>Javier López</h4>
+                            <div class="stars">★★★★★</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <div class="section-title">
+                <h2>Contacto</h2>
+                <p>¿Tienes alguna pregunta o quieres hacer un pedido?</p>
+            </div>
+
+            <div class="contact-content">
+                <div class="contact-info">
+                    <h2>Haz tu pedido ahora</h2>
+                    <p>Estamos aquí para servirte. Puedes visitarnos en nuestro local, pedir a domicilio o recoger en tienda.</p>
+                    
+                    <div class="contact-method">
+                        <i class="fas fa-phone-alt"></i>
+                        <div>
+                            <h3>Llámanos</h3>
+                            <p>+1 (800) 555-1234</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <i class="fab fa-whatsapp"></i>
+                        <div>
+                            <h3>WhatsApp</h3>
+                            <p>+1 (800) 555-1234</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@burgermilenio.com</p>
+                        </div>
+                    </div>
+                    
+                    <a href="https://wa.me/18095551234?text=Hola,%20quiero%20hacer%20un%20pedido" class="btn" target="_blank">Pedir por WhatsApp</a>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Envíanos un mensaje</h3>
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Nombre</label>
+                            <input type="text" id="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensaje</label>
+                            <textarea id="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Enviar Mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <h3>BurgerMilenio</h3>
+                    <p>Desde 2023 sirviendo las mejores hamburguesas artesanales con sabores milenarios.</p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-tiktok"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#menu">Menú</a></li>
+                        <li><a href="#combos">Combos</a></li>
+                        <li><a href="#about">Nosotros</a></li>
+                        <li><a href="#location">Ubicación</a></li>
+                        <li><a href="#contact">Contacto</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-links">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
+                        <li><a href="#">Política de Cookies</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-newsletter">
+                    <h4>Newsletter</h4>
+                    <p>Suscríbete para recibir nuestras promociones y novedades.</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Tu email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2023 BurgerMilenio. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile Menu Toggle
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+        
+        // Sticky Header
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('header');
+            header.classList.toggle('sticky', window.scrollY > 0);
+        });
+        
+        // Menu Filtering
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const menuItems = document.querySelectorAll('.menu-item');
+        
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Remove active class from all buttons
+                categoryButtons.forEach(btn => btn.classList.remove('active'));
+                
+                // Add active class to clicked button
+                button.classList.add('active');
+                
+                // Get filter value
+                const filterValue = button.getAttribute('data-category');
+                
+                // Filter menu items
+                menuItems.forEach(item => {
+                    if (filterValue === 'all' || item.getAttribute('data-category') === filterValue) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Smooth Scrolling for Anchor Links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Form Submission
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm) {
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('¡Gracias por tu mensaje! Te contactaremos pronto.');
+                this.reset();
+            });
+        }
+        
+        // Newsletter Form
+        const newsletterForm = document.querySelector('.newsletter-form');
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('¡Gracias por suscribirte a nuestro newsletter!');
+                this.reset();
+            });
+        }
+    </script>
+</body>
+</html>
